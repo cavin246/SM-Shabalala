@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source to Sea Trust</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --bg-dark: #10232b;
+            --bg-darker: #0b191f;
+            --bg-teal: #2c5c6a;
+            --accent-yellow: #dda04b;
+            --text-main: #f4f4f4;
+            --text-muted: #9ba9af;
+            --border-color: #1d3a45;
+            
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .logo {
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        /* --- PAGE ROUTING (TABS) --- */
+        .page-section {
+            display: none; /* Hide all pages by default */
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .page-section.active-page {
+            display: block; /* Show active page */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            background-color: var(--bg-darker);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            color: var(--accent-yellow);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.3s;
+            padding-bottom: 0.2rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+            border-bottom: 1px solid var(--accent-yellow);
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-yellow);
+            color: var(--bg-darker);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #f0b460;
+        }
+
+        .btn-text {
+            background: transparent;
+            color: var(--text-main);
+            padding-left: 1rem;
+        }
+
+        .btn-text:hover {
+            color: var(--accent-yellow);
+        }
+
+        /* --- TYPOGRAPHY HELPERS --- */
+        .eyebrow {
+            color: var(--accent-yellow);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .caption {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        /* --- HERO SECTION (HOME) --- */
+        .hero {
+            display: flex;
+            padding: 6rem 4rem;
+            min-height: 80vh;
+            position: relative;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 550px;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 5.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .highlight {
+            color: var(--accent-yellow);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 2;
+        }
+
+        .hero-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* --- STATS BAR --- */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 4rem;
+        }
+
+        .stat h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- TWO COLUMN CONTENT --- */
+        .content-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 6rem 4rem;
+        }
+
+        .dark-bg {
+            background-color: var(--bg-darker);
+        }
+
+        .text-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .text-content p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .tag {
+            background-color: transparent;
+            border: 1px solid var(--text-muted);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .content-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- PRESSURE / DATA SECTION --- */
+        .pressure-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .big-stat h1 {
+            font-size: 5rem;
+            line-height: 1;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .big-stat p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .dot-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 350px;
+            margin-top: 2rem;
+        }
+
+        .dot-grid::before {
+            content: "•••••••••••••••••••••";
+            color: #b84a4a;
+            font-size: 24px;
+            letter-spacing: 6px;
+            line-height: 1;
+        }
+
+        .dot-grid::after {
+            content: "•••••••";
+            color: var(--text-muted);
+            font-size: 24px;
+            letter-spacing: 6px;
+            line-height: 1;
+        }
+
+        .data-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .data-list li {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .data-list li span {
+            display: block;
+            color: var(--accent-yellow);
+            font-size: 1.5rem;
+            font-family: var(--font-heading);
+            margin-bottom: 0.2rem;
+        }
+
+        /* --- PANORAMA SECTION --- */
+        .panorama-section {
+            padding: 6rem 4rem;
+            background-color: var(--bg-darker);
+        }
+
+        .pano-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* --- SPECIES PAGE STYLES --- */
+        .page-header {
+            padding: 6rem 4rem 2rem 4rem;
+            max-width: 900px;
+        }
+
+        .species-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            padding: 2rem 4rem 6rem 4rem;
+        }
+
+        .species-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 1.5rem;
+            background-color: var(--bg-darker);
+        }
+
+        .species-card h3 {
+            font-size: 1.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .species-card p {
+            color: var(--text-muted);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--bg-darker);
+            padding: 4rem 4rem 2rem 4rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            max-width: 250px;
+        }
+
+        .footer-links h4, .footer-contact h4, .footer-affiliate h4 {
+            color: var(--accent-yellow);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-body);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a, .footer-contact p, .footer-affiliate p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1024px) {
+            .hero-title { font-size: 4rem; }
+            .content-section, .pressure-grid { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 2rem;}
+            .footer-top { grid-template-columns: 1fr 1fr; }
+            
+            .hero {
+                flex-direction: column;
+                text-align: left;
+            }
+            .hero-image-container {
+                margin-top: 3rem;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 1.5rem; flex-direction: column; gap: 1rem; }
+            .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            .hero { padding: 4rem 1.5rem; }
+            .hero-title { font-size: 3rem; }
+            .content-section, .panorama-section, .page-header, .species-grid { padding: 4rem 1.5rem; }
+            .footer-top { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">~</span> Source to Sea Trust
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="switchPage('home')" id="nav-home" class="active">Home</a></li>
+            <li><a href="#">The Journey</a></li>
+            <li><a onclick="switchPage('species')" id="nav-species">Species</a></li>
+            <li><a href="#">Get Involved</a></li>
+            <li><a href="#">The project</a></li>
+        </ul>
+        <a href="#" class="btn btn-primary">Get involved</a>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- HOME PAGE                                  -->
+    <!-- ========================================== -->
+    <main id="page-home" class="page-section active-page">
+        
+        <!-- HERO SECTION -->
+        <header class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">Uthukela River to the Thukela Banks</p>
+                <h1 class="hero-title">Source<br>to <span class="highlight">Sea</span></h1>
+                <p class="hero-description">560 km of river carry the Drakensberg to the Indian Ocean. Where it meets the sea, silt builds the hidden Thukela Banks, a nursery for turtles, sharks and fish. We work to keep that journey healthy.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">Get involved &rarr;</a>
+                    <a href="#" class="btn btn-text">See the journey</a>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <img src="images/hero.jpg" alt="Source to Sea landscape" class="hero-img">
+            </div>
+        </header>
+
+        <!-- STATS BAR -->
+        <section class="stats-bar">
+            <div class="stat">
+                <h2>560 km</h2>
+                <p>Source to sea</p>
+            </div>
+            <div class="stat">
+                <h2>29,100 km²</h2>
+                <p>Catchment area</p>
+            </div>
+            <div class="stat">
+                <h2>373 million m³</h2>
+                <p>Woodstock Dam Capacity</p>
+            </div>
+            <div class="stat">
+                <h2>21 of 28</h2>
+                <p>Ecosystem types threatened</p>
+            </div>
+        </section>
+
+        <!-- TWO COLUMN CONTENT SECTION -->
+        <section class="content-section dark-bg">
+            <div class="text-content">
+                <p class="eyebrow">The hidden world</p>
+                <h2>The river builds the sea floor</h2>
+                <p>The uThukela rises at Mont-aux-Sources in the Drakensberg and runs about 560 km to the Indian Ocean in KwaZulu-Natal. Most of it falls in the lower 480 km, which is why it carries so much sediment.</p>
+                <p>At the mouth, that sediment and detritus builds the Thukela Banks in the KwaZulu-Natal Bight. The turbid, nutrient-rich water feeds mud and soft-sediment habitats...</p>
+                
+                <div class="tags">
+                    <span class="tag">Leatherback turtle: Critically Endangered</span>
+                    <span class="tag">Hammerhead sharks: Endangered</span>
+                    <span class="tag">Dageraad: Endangered</span>
+                </div>
+            </div>
+            <div class="image-content">
+                <img src="images/about.jpg" alt="Beneath the surface of the KwaZulu-Natal Bight" class="content-img">
+                <p class="caption">Beneath the surface of the KwaZulu-Natal Bight. Illustration from the Source to Sea gatefold.</p>
+            </div>
+        </section>
+
+        <!-- PRESSURE SECTION -->
+        <section class="content-section">
+            <div class="pressure-grid">
+                <div class="pressure-text">
+                    <p class="eyebrow">The numbers</p>
+                    <h2>Most of this seascape is under pressure</h2>
+                    
+                    <div class="big-stat">
+                        <h1>21 of 28</h1>
+                        <p>ecosystem types are<br>threatened</p>
+                    </div>
+                    
+                    <div class="dot-grid"></div>
+                </div>
+                
+                <div class="pressure-list">
+                    <p>Trawling, line fishing, mining and petroleum applications and a recently laid submarine cable all sit on the banks. About half of the area is in poor ecological condition.</p>
+                    
+                    <ul class="data-list">
+                        <li><span>560 km</span> from Mont-aux-Sources to the Indian Ocean</li>
+                        <li><span>29,100 km²</span> catchment, at about 200 m³/s average discharge</li>
+                        <li><span>373 million m³</span> held by Woodstock Dam, commissioned 1982</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANORAMA SECTION -->
+        <section class="panorama-section">
+            <img src="images/pano1.jpg" alt="River profile from source to sea" class="pano-img">
+            <p class="caption">The river profile from source to sea. Illustration from the front flat of the Source to Sea gatefold.</p>
+            
+            <img src="images/pano2.jpg" alt="Beneath the surface illustration" class="pano-img" style="margin-top: 3rem;">
+            <p class="caption">Below the surface. Illustration from the back flat of the Source to Sea gatefold.</p>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- SPECIES PAGE                               -->
+    <!-- ========================================== -->
+    <main id="page-species" class="page-section">
+        
+        <header class="page-header">
+            <p class="eyebrow">Species</p>
+            <h1 class="hero-title" style="font-size: 4rem;">Who lives where the<br>river meets the sea</h1>
+            <p class="hero-description" style="margin-top: 1.5rem; max-width: 700px;">
+                From an endemic river fish to turtles, sharks and the sardine run. Conservation statuses are from the EBSA assessment.
+            </p>
+        </header>
+
+        <section class="species-grid">
+            
+            <div class="species-card">
+                <img src="images/sp_yellowfish.jpg" alt="Scaly yellowfish">
+                <span class="tag">Endemic</span>
+                <h3>Scaly yellowfish</h3>
+                <p><i>Labeobarbus natalensis</i></p>
+                <p>A common endemic freshwater fish of the Thukela system. It stands for the upper river.</p>
+            </div>
+            
+            <div class="species-card">
+                <img src="images/sp_leatherback.jpg" alt="Leatherback turtle">
+                <span class="tag">Critically Endangered</span>
+                <h3>Leatherback turtle</h3>
+                <p><i>Dermochelys coriacea</i></p>
+                <p>The Thukela area is a feeding and migration zone. Hawksbill and green turtles are also recorded here.</p>
+            </div>
+
+            <div class="species-card">
+                <img src="images/sp_hammerhead.jpg" alt="Hammerhead sharks">
+                <span class="tag">Endangered</span>
+                <h3>Hammerhead sharks</h3>
+                <p><i>Sphyrna lewini and Sphyrna mokarran</i></p>
+                <p>Both are listed as Endangered. The area is also a nursery for sharks.</p>
+            </div>
+            
+            <div class="species-card">
+                <img src="images/sp_dageraad.jpg" alt="Dageraad and red stumpnose">
+                <span class="tag">Endangered</span>
+                <h3>Dageraad and red stumpnose</h3>
+                <p><i>Chrysoblephus cristiceps and C. gibbiceps</i></p>
+                <p>Both Endangered fish use the banks as a nursery.</p>
+            </div>
+            
+            <div class="species-card">
+                <img src="images/sp_sardine.jpg" alt="Sardine run">
+                <span class="tag">Migration Route</span>
+                <h3>Sardine</h3>
+                <p><i>Sardinops sagax</i></p>
+                <p>The area is a spawning and migration route for sardine.</p>
+            </div>
+            
+            <div class="species-card">
+                <img src="images/sp_skate.jpg" alt="Bearded goby and spotted legskate">
+                <span class="tag">Endemic</span>
+                <h3>Bearded goby and spotted legskate</h3>
+                <p>Endemic to the area</p>
+                <p>Species found only in this part of the coast.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- FOOTER (Shared across all pages)           -->
+    <!-- ========================================== -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo"><span class="logo-icon">~</span> Source to Sea Trust</div>
+                <p>Protecting the uThukela River and the Thukela Banks, from the Drakensberg to the Indian Ocean.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>EXPLORE</h4>
+                <ul>
+                    <li><a href="#">The Journey</a></li>
+                    <li><a onclick="switchPage('species')">Species</a></li>
+                    <li><a href="#">Get Involved</a></li>
+                    <li><a href="#">The project</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>CONTACT</h4>
+                <p>224431544@edu.vut.ac.za<br>KwaZulu-Natal, South Africa</p>
+            </div>
+            <div class="footer-affiliate">
+                <h4>NGO AFFILIATE</h4>
+                <p>Concept NGO for a Communication Design 3 project at Vaal University of Technology.</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Source to Sea Trust (concept). Illustrations by Mukelani.</p>
+            <p>Communication Design 3, Vaal University of Technology</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT FOR TABS -->
+    <script>
+        function switchPage(pageName) {
+            // 1. Hide all page sections
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => {
+                page.classList.remove('active-page');
+            });
+
+            // 2. Show the selected page section
+            const activePage = document.getElementById('page-' + pageName);
+            if (activePage) {
+                activePage.classList.add('active-page');
+            }
+
+            // 3. Update nav link styling (active state)
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to the clicked link
+            const activeLink = document.getElementById('nav-' + pageName);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // 4. Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
